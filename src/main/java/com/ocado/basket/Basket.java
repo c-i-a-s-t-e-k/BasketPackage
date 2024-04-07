@@ -5,15 +5,17 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class Basket {
+public class Basket implements Cloneable{
     private final ConfigManager manager;
-    private final Map<Integer, Set<Integer>> productsNodes = new HashMap<>();
-    private final Map<Integer, Set<Integer>> deliveryNodes = new HashMap<>();
+    private final Map<Integer, Set<Integer>> productsNodes;
+    private final Map<Integer, Set<Integer>> deliveryNodes;
     private final Set<Integer> changes;
     private int[] deliveryStat;
 
 
     public Basket(Collection<String> items, ConfigManager manager) {
+        productsNodes = new HashMap<>();
+        deliveryNodes = new HashMap<>();
         this.manager = manager;
         for (String item : items) {
             int productId = manager.getProductId(item);
@@ -31,6 +33,19 @@ public class Basket {
         changes = IntStream.rangeClosed(0, manager.getDeliveriesSize() - 1).boxed().collect(Collectors.toSet());
         deliveryStat = new int[manager.getDeliveriesSize()];
         updateStats();
+    }
+
+    private Basket(
+            Map<Integer, Set<Integer>> deliveryNodes,
+            Map<Integer, Set<Integer>> productsNodes,
+            ConfigManager manager, Set<Integer> changes,
+            int[] deliveryStat
+    ){
+        this.deliveryNodes = deliveryNodes;
+        this.productsNodes = productsNodes;
+        this.manager = manager;
+        this.changes = changes;
+        this.deliveryStat = deliveryStat;
     }
 
     //    ths should be called when *changes* is empty
@@ -66,7 +81,6 @@ public class Basket {
 
         if (!deliveryNodes.containsKey(deliveryId)) {
             return split;
-//            throw new IndexOutOfBoundsException("Not such delivery");
         }
 
         List<Integer> deliveryNode = List.copyOf(deliveryNodes.get(deliveryId));
@@ -86,4 +100,13 @@ public class Basket {
         return new ArrayList<>(this.changes);
     }
 
+    @Override
+    public Basket clone() {
+        return  new Basket(
+                Map.copyOf(productsNodes),
+                Map.copyOf(deliveryNodes),
+                manager,
+                Set.copyOf(changes),
+                Arrays.copyOf(deliveryStat, deliveryStat.length));
+    }
 }
