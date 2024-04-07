@@ -9,4 +9,4 @@ This class manages the data from the configuration file (config.json). It's wort
 ## Basket
 This class manages data from the input list. It represents the input list of products as a bipartite graph, where edges connect products with their available delivery methods.
 
-[//]: # (this file is made wit chat GPT help.URL to chat: https://chat.openai.com/share/1c9e715e-af5e-44a1-b0d9-868e62a9af41)
+[//]: # (this file is made with chat GPT help.URL to chat: https://chat.openai.com/share/1c9e715e-af5e-44a1-b0d9-868e62a9af41)
