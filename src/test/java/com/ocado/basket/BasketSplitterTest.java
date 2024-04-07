@@ -58,4 +58,19 @@ public class BasketSplitterTest {
     @Test public void splitCorrectnessTest2() {
         checkNecessaryCondition(items2);}
 
+    @Test public void checkIfInputChangeAnswer(){
+        List<String> items = new ArrayList<>(List.of("F", "A", "E", "G", "B", "C", "D"));
+        BasketSplitter splitter = new BasketSplitter(
+                Thread.currentThread().getContextClassLoader().getResource("ConfigContraArg.json").getFile());
+
+        Map<String, List<String>> splits;
+
+//        the optimal result is {1=[A, B, C], 2=[D, E], 3=[F, G]}
+        for (int i = 0; i < 100; i++){
+            Collections.shuffle(items);
+            splits = splitter.split(items);
+            Assertions.assertEquals(splits.size(), 3);
+        }
+    }
+
 }

@@ -35,7 +35,7 @@ public class Basket {
 
     //    ths should be called when *changes* is empty
     public void updateStats() {
-        deliveryStat = new int[manager.getDeliveriesSize()];
+        deliveryStat = Arrays.copyOf(deliveryStat, deliveryStat.length);
         for (int deliveryId : changes) {
             if (!deliveryNodes.containsKey(deliveryId)) {
                 deliveryStat[deliveryId] = 0;
